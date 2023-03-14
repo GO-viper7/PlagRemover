@@ -6,7 +6,8 @@
 ### Tired of changing variables ? Don't you dare Varry (pun intended) </br>
 
 ## **VarHandler replaces variables in C, CPP, PY files with random words/string of characters**  </br>
-![My GIF](./varHandler.gif =250x250)
+<img src="./varHandler.gif" alt="My GIF" width="250" height="250"/>
+
 ## Feel free to DM me @ Discord `GoViper#4511` if you got any issues or ideas </br>
 
 ## PS : For a variable to get replaced, length of the respective variable needs to be greater than 3
