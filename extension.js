@@ -31,42 +31,111 @@ function activate(context) {
     function (uri) {
       socket.on("connect", async () => {
         if (uri) {
-            const filePath = uri.fsPath;
-
-            if(filePath.endsWith(".c") || filePath.endsWith('.cpp') || filePath.endsWith('.py')) {
-              fs.readFile(filePath, (err, data) => {
-                if (err) throw err;
-                let fileContent = data.toString();
-                socket.emit("send_variable", { "fileContent" : fileContent, "filePath" : filePath });
-              });
-              socket.on("result",async (result) => {
-                if(filePath == result['globFilePath']) {
-                  fs.writeFile(filePath, result['contents'], (err) => {
-                    if (err) {
-                      console.error(err);
-                      return;
-                    }
-                  });
-                  await vscode.commands.executeCommand('workbench.action.reloadWindow');
-                }
-              });
+          const filePath = uri.fsPath;
+          if (
+            filePath.endsWith(".c") ||
+            filePath.endsWith(".cpp") ||
+            filePath.endsWith(".py")
+          ) {
+            const items = [
+              {
+                label: "Random",
+                description: "Choose to replace with random variables",
+              },
+              {
+                label: "Related",
+                description: "Choose to replace with related variables",
+              },
+            ];
+            try {
+              const selectedButton = await vscode.window.showQuickPick(items);
+              if (selectedButton.label === "Random") {
+                vscode.window.withProgress(
+                  {
+                    location: vscode.ProgressLocation.Notification,
+                    title: "Please wait till window reloads",
+                    cancellable: false,
+                  },
+                  (progress, token) => {
+                    fs.readFile(filePath, (err, data) => {
+                      if (err) throw err;
+                      let fileContent = data.toString();
+                      socket.emit("send_variable", {
+                        fileContent: fileContent,
+                        filePath: filePath,
+                        random: true,
+                      });
+                    });
+                    socket.on("result", async (result) => {
+                      if (filePath == result["globFilePath"]) {
+                        fs.writeFile(filePath, result["contents"], (err) => {
+                          if (err) {
+                            console.error(err);
+                            return;
+                          }
+                        });
+                        await vscode.commands.executeCommand(
+                          "workbench.action.reloadWindow"
+                        );
+                      }
+                    });
+                  }
+                );
+              } else if (selectedButton.label === "Related") {
+                vscode.window.withProgress(
+                  {
+                    location: vscode.ProgressLocation.Notification,
+                    title: "Please wait till window reloads",
+                    cancellable: false,
+                  },
+                  (progress, token) => {
+                    fs.readFile(filePath, (err, data) => {
+                      if (err) throw err;
+                      let fileContent = data.toString();
+                      socket.emit("send_variable", {
+                        fileContent: fileContent,
+                        filePath: filePath,
+                        random: false,
+                      });
+                    });
+                    socket.on("result", async (result) => {
+                      if (filePath == result["globFilePath"]) {
+                        fs.writeFile(filePath, result["contents"], (err) => {
+                          if (err) {
+                            console.error(err);
+                            return;
+                          }
+                        });
+                        await vscode.commands.executeCommand(
+                          "workbench.action.reloadWindow"
+                        );
+                      }
+                    });
+                  }
+                );
+              }
+            }catch(err) {
+              console.log(err);
+              await vscode.commands.executeCommand("workbench.action.reloadWindow");
             }
-            else {
-              await vscode.window.showInformationMessage("Only supported for C, C++ and Python files!");
-              setTimeout( async () => {
-                await vscode.commands.executeCommand('workbench.action.reloadWindow');
-              }, 2000)
-              await vscode.commands.executeCommand('workbench.action.reloadWindow');
-            }
+            
+          } else {
+            await vscode.window.showInformationMessage(
+              "Only supported for C, C++ and Python files!"
+            );
+            setTimeout(async () => {
+              await vscode.commands.executeCommand(
+                "workbench.action.reloadWindow"
+              );
+            }, 2000);
           }
-          else {
-            await vscode.commands.executeCommand('workbench.action.reloadWindow');
-          }
+        } else {
+          await vscode.commands.executeCommand("workbench.action.reloadWindow");
+        }
+        
       });
     }
   );
-
-  vscode.window.showInformationMessage("Please wait till the window reloads!");
   context.subscriptions.push(disposable);
 }
 

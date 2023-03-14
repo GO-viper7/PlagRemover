@@ -2,8 +2,9 @@
   "name": "varhandler",
   "displayName": "VarHandler",
   "publisher": "NithishReddy",
+  "icon": "1645855883202_VH-LOGO-1.png",
   "description": "Variable Handler",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.76.0"
   },
@@ -23,7 +24,7 @@
     "commands": [
       {
         "command": "varhandler.varChanger",
-        "title": "Variable Changer"
+        "title": "Change Variables"
       }
     ],
     "menus": {
