@@ -40,11 +40,14 @@ function activate(context) {
             const items = [
               {
                 label: "Random",
-                description: "Choose to replace with random variables",
+                detail: "Choose to replace with random variables",
+                description: 'Ramdomized variables'
+
               },
               {
                 label: "Related",
-                description: "Choose to replace with related variables",
+                detail: "Choose to replace with related variables",
+                description: 'Related variables'
               },
             ];
             try {
