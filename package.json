@@ -1,10 +1,10 @@
 {
   "name": "plag-remover",
-  "displayName": "Plag Remover",
+  "displayName": "PlagRemover",
   "publisher": "NithishReddy",
-  "icon": "1645855883202_VH-LOGO-1.png",
+  "icon": "PlagRemover.png",
   "description": "Removes Plag",
-  "version": "0.0.11",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.76.0"
   },
