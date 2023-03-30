@@ -1,7 +1,7 @@
 
 # PlagRemover
 
-  
+## [**`Visual Studio Code Marketplace : PlagRemover`**]("https://marketplace.visualstudio.com/items?itemName=NithishReddy.plag-remover")
 
 ### Tired of changing variables ? Don't you dare Vary (pun intended) </br>
 
